@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-column">
+            <div class="header-content">
+                <h1>Day to Day Expenses</h1>
+            </div>
+            <div class="header-icons">
+                <span class="search-icon">
+                    <i class="fas fa-search"></i>
+                  </span>
+                <span class="dots-icon">&#8942;</span>
+            </div>
+        </div>
+        <div class="header-column">
+            <div class="header-edit-icon">
+              <a href="/edit">&#9998;</a>
+            </div>
+            <div class="header-tabs">
+                <span>
+                  <a href="/daily" class="active-tab">DAILY</a>
+                </span>
+                <span>
+                  <a href="/monthly">MONTHLY</a>
+                </span>
+                <span>
+                  <a href="/yearly">YEARLY</a>
+                </span>
+            </div>
+        </div>
+    </header>
+    <main>
+      <div class="sub-heading-daily">
+        <span class="arrow left-arrow">&#60;</span>
+        <div class="date-box">
+            <span class="date"></span>
+        </div>
+        <div class="date-details">
+            <span class="month"></span>
+            <span class="day"></span>
+        </div>
+        <div class="balance">
+            <span>Balance</span>
+            <span>Rs. 000</span>
+        </div>
+        <span class="arrow right-arrow">&#62;</span>
+    </div>
+
+    <div class="content">
+      <span>C/F</span>
+      <span class="balance">Rs. 00</span>
+  </div>
+
+  <div class="daily-box">
+    <span>Total Income (Credit)</span>
+    <span>Rs. 0.00</span>
+  </div>
+
+  <div class="data">
+    Tap on '+' to add new item and long press to edit.
+  </div>
+
+  <div class="daily-box">
+    <span>Total Expense (Debit)</span>
+    <span>Rs. 0.00</span>
+  </div>
+
+  <div class="data">
+    Tap on '+' to add new item and long press to edit.
+  </div>
+
+    <div class="content-container">
+      <div class="circle">
+        <a href="" >&#43;</a>
+      </div>
+  </div>
+    </main>
+
+    <script>
+      const months = [
+          "January", "February", "March", "April", "May", "June",
+          "July", "August", "September", "October", "November", "December"
+      ];
+      
+      const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+      const dateElement = document.querySelector(".date");
+      const monthElement = document.querySelector(".month");
+      const dayElement = document.querySelector(".day");
+      const leftArrow = document.querySelector(".left-arrow");
+      const rightArrow = document.querySelector(".right-arrow");
+
+      let currentDate = new Date();
+      let currentDay = currentDate.getDate();
+      let currentMonth = currentDate.getMonth(); // 0-based index
+      let currentYear = currentDate.getFullYear();
+
+      function updateDate() {
+          dateElement.textContent = currentDay;
+          monthElement.textContent = `${months[currentMonth]}, ${currentYear}`;
+          dayElement.textContent = days[new Date(currentYear, currentMonth, currentDay).getDay()];
+      }
+
+      leftArrow.addEventListener("click", () => {
+          currentDay--;
+          if (currentDay < 1) {
+              currentMonth--;
+              if (currentMonth < 0) {
+                  currentMonth = 11;
+                  currentYear--;
+              }
+              const daysInPreviousMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+              currentDay = daysInPreviousMonth;
+          }
+          updateDate();
+      });
+
+      rightArrow.addEventListener("click", () => {
+          currentDay++;
+          const daysInCurrentMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+          if (currentDay > daysInCurrentMonth) {
+              currentDay = 1;
+              currentMonth++;
+              if (currentMonth > 11) {
+                  currentMonth = 0;
+                  currentYear++;
+              }
+          }
+          updateDate();
+      });
+
+      updateDate();
+  </script>
+</body>
+</html>

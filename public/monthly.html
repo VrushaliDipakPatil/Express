@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Monthly Page</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="header-column">
+        <div class="header-content">
+          <h1>Day to Day Expenses</h1>
+        </div>
+        <div class="header-icons">
+          <span class="search-icon">
+            <i class="fas fa-search"></i>
+          </span>
+          <span class="dots-icon">&#8942;</span>
+        </div>
+      </div>
+      <div class="header-column">
+        <div class="header-edit-icon">
+          <a href="/edit">&#9998;</a>
+        </div>
+        <div class="header-tabs">
+          <span>
+            <a href="/daily">DAILY</a>
+          </span>
+          <span>
+            <a href="/monthly" class="active-tab">MONTHLY</a>
+          </span>
+          <span>
+            <a href="/yearly">YEARLY</a>
+          </span>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="sub-heading">
+        <span class="arrow left-arrow">&#60;</span>
+        <div class="date">
+          <span class="date"></span>
+        </div>
+        <span class="arrow right-arrow">&#62;</span>
+      </div>
+
+      <div class="monthly-data">
+        <div class="mon-col">
+          <span>Total Income (Credit) = ₹0.00</span>
+          <span>Total Expense (Debit) = ₹0.00</span>
+        </div>
+        <div class="mon-col">
+          <span>C/F = ₹0.00</span>
+          <span>Balance = ₹0.00</span>
+        </div>
+      </div>
+
+      <div class="content-container">
+        <div class="circle">
+          <a href=""><i class="fas fa-file-pdf"></i></a>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      const months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+
+      const dateBox = document.querySelector(".date");
+      const leftArrow = document.querySelector(".left-arrow");
+      const rightArrow = document.querySelector(".right-arrow");
+
+      let currentDate = new Date();
+      let currentMonth = currentDate.getMonth(); // 0-based index
+      let currentYear = currentDate.getFullYear();
+
+      function updateDateBox() {
+        dateBox.textContent = `${months[currentMonth]} ${currentYear}`;
+      }
+
+      leftArrow.addEventListener("click", () => {
+        currentMonth--;
+        if (currentMonth < 0) {
+          currentMonth = 11;
+          currentYear--;
+        }
+        updateDateBox();
+      });
+
+      rightArrow.addEventListener("click", () => {
+        currentMonth++;
+        if (currentMonth > 11) {
+          currentMonth = 0;
+          currentYear++;
+        }
+        updateDateBox();
+      });
+
+      updateDateBox();
+    </script>
+  </body>
+</html>

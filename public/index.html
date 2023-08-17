@@ -1,64 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Product Manager</title>
-  <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container mt-4">
-    <h1>Add Product</h1>
-    <!-- ... Existing Form ... -->
-
-    <div class="mt-4">
-      <h2>Products</h2>
-      <div id="productList">
-        <!-- Product data will be dynamically added here -->
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // Fetch product data from API and display it on the UI
-    async function fetchProducts() {
-      try {
-        const response = await fetch('/api/products');
-        const products = await response.json();
-        const productList = document.getElementById('productList');
-        productList.innerHTML = '';
-        products.forEach((product) => {
-          const productDiv = document.createElement('div');
-          productDiv.className = 'row';
-          productDiv.innerHTML = `
-            <div class="col">
-              <p><strong>Product Name:</strong> ${product.product_name}</p>
-              <p><strong>Selling Price:</strong> ${product.selling_price}</p>
+    <header class="app-header">
+        <div class="header-column">
+            <div class="header-content">
+                <h1>Day to Day Expenses</h1>
             </div>
-            <div class="col">
-              <button class="btn btn-danger" onclick="deleteProduct(${product.id})">Delete</button>
+            <div class="header-icons">
+              <span class="search-icon">
+                <i class="fas fa-search"></i>
+              </span>              
+                <span class="dots-icon">&#8942;</span>
             </div>
-          `;
-          productList.appendChild(productDiv);
-        });
-      } catch (err) {
-        console.error('Error fetching products:', err);
-      }
-    }
-
-    // Delete a product by ID
-    async function deleteProduct(id) {
-      try {
-        const response = await fetch(`/api/products/${id}`, { method: 'DELETE' });
-        const data = await response.json();
-        console.log(data);
-        // Update the UI after deletion
-        fetchProducts();
-      } catch (err) {
-        console.error('Error deleting product:', err);
-      }
-    }
-
-    // Fetch initial product data on page load
-    fetchProducts();
-  </script>
+        </div>
+        <div class="header-column">
+            <div class="header-edit-icon">
+              <a href="/edit">&#9998;</a>
+            </div>
+            <div class="header-tabs">
+                <span>
+                  <a href="/daily">DAILY</a>
+                </span>
+                <span>
+                  <a href="/monthly">MONTHLY</a>
+                </span>
+                <span>
+                  <a href="/yearly">YEARLY</a>
+                </span>
+            </div>
+        </div>
+    </header>
+    <!-- Rest of your main content -->
+    <script>
+      window.onload = function() {
+        window.location.href = "/daily";
+      };
+    </script>
 </body>
 </html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yearly Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-column">
+            <div class="header-content">
+                <h1>Day to Day Expenses</h1>
+            </div>
+            <div class="header-icons">
+                <span class="search-icon">
+                    <i class="fas fa-search"></i>
+                  </span>
+                <span class="dots-icon">&#8942;</span>
+            </div>
+        </div>
+        <div class="header-column">
+            <div class="header-edit-icon">
+              <a href="/edit">&#9998;</a>
+            </div>
+            <div class="header-tabs">
+                <span>
+                  <a href="/daily">DAILY</a>
+                </span>
+                <span>
+                  <a href="/monthly">MONTHLY</a>
+                </span>
+                <span>
+                  <a href="/yearly" class="active-tab">YEARLY</a>
+                </span>
+            </div>
+        </div>
+    </header>
+    <main>
+      <div class="sub-heading">
+        <span class="arrow left-arrow">&#60;</span>
+        <div class="date">
+            <span class="year"></span>
+        </div>
+        <span class="arrow right-arrow">&#62;</span>
+      </div>
+
+<div class="data">
+  <span></span>
+  <span>Income (Credit)</span>
+  <span>Expense (Debit)</span>
+  <span>Balance</span>
+</div>
+<div class="data">
+  <span>C/F</span>
+  <span>₹0.00</span>
+</div>
+
+      <div class="content-container">
+        <div class="circle">
+          <a href="" ><i class="fas fa-file-pdf"></i></a>
+        </div>
+    </div>
+    </main>
+
+    <script>
+
+      const yearElement = document.querySelector(".year");
+      const leftArrow = document.querySelector(".left-arrow");
+      const rightArrow = document.querySelector(".right-arrow");
+
+      let currentDate = new Date();
+      let currentYear = currentDate.getFullYear(); // 0-based index
+
+      function updateYear() {
+        yearElement.textContent = currentYear;
+      }
+
+      leftArrow.addEventListener("click", () => {
+          currentYear--;
+          updateYear()
+      });
+
+      rightArrow.addEventListener("click", () => {
+          currentYear++;
+          updateYear()
+      });
+
+      updateYear();
+  </script>
+</body>
+</html>
