@@ -270,26 +270,30 @@
 
 
         if (data.income.length === 0) {
-          incomeDataElement.textContent = "Tap on '+' to add new item and long press to edit.";
+          incomeDataElement.innerHTML = "Tap on '+' to add new item and long press to edit.";
         } else {
           incomeDataElement.innerHTML = ''; // Clear existing data
           data.income.forEach(item => {
             const itemElement = document.createElement('div');
-            itemElement.innerHTML = `${item.Source}: ₹${item.Amount.toFixed(2)}<br>`; // Use innerHTML for line breaks
+            itemElement.classList.add('item-row'); // Add a CSS class for styling
+            itemElement.innerHTML = `${item.Source}: ₹${item.Amount.toFixed(2)}`;
             incomeDataElement.appendChild(itemElement);
           });
         }
 
         if (data.expense.length === 0) {
-          expenseDataElement.textContent = "Tap on '+' to add new item and long press to edit.";
+          expenseDataElement.innerHTML = "Tap on '+' to add new item and long press to edit.";
         } else {
           expenseDataElement.innerHTML = ''; // Clear existing data
           data.expense.forEach(item => {
             const itemElement = document.createElement('div');
-            itemElement.innerHTML = `${item.Source}: ₹${item.Amount.toFixed(2)}<br>`; // Use innerHTML for line breaks
+            itemElement.classList.add('item-row'); // Add a CSS class for styling
+            itemElement.innerHTML = `${item.Source}: ₹${item.Amount.toFixed(2)}`;
             expenseDataElement.appendChild(itemElement);
           });
         }
+
+
 
       }
 

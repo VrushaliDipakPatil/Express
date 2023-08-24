@@ -122,6 +122,18 @@ a {
   padding: 5px;
 }
 
+.income-data {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.expense-data {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
 .date-box {
   border: 2px solid white; /* Add a white border */
   background-color: #368a63; /* Same color as the sub-heading */
