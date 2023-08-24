@@ -1,95 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Page</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Page</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <header class="app-header">
-        <div class="header-column">
-            <div class="header-content">
-                <h1>Day to Day Expenses</h1>
-            </div>
-            <div class="header-icons">
-                <span class="search-icon">
-                    <i class="fas fa-search"></i>
-                  </span>
-                <span class="dots-icon">&#8942;</span>
-            </div>
-        </div>
-        <div class="header-column">
-            <div class="header-edit-icon">
-              <a href="/edit">&#9998;</a>
-            </div>
-            <div class="header-tabs">
-                <span>
-                  <a href="/daily" class="active-tab">DAILY</a>
-                </span>
-                <span>
-                  <a href="/monthly">MONTHLY</a>
-                </span>
-                <span>
-                  <a href="/yearly">YEARLY</a>
-                </span>
-            </div>
-        </div>
-    </header>
-    <main>
-      <div class="sub-heading-daily">
-        <span class="arrow left-arrow">&#60;</span>
-        <div class="date-box">
-            <span class="date"></span>
-        </div>
-        <div class="date-details">
-            <span class="month"></span>
-            <span class="day"></span>
-        </div>
-        <div class="balance">
-            <span>Balance</span>
-            <span>Rs. 000</span>
-        </div>
-        <span class="arrow right-arrow">&#62;</span>
+<header class="app-header">
+  <div class="header-column">
+    <div class="header-content">
+      <h1>Day to Day Expenses</h1>
+    </div>
+    <div class="header-icons">
+      <span class="search-icon">
+        <i class="fas fa-search"></i>
+      </span>
+      <span class="dots-icon">&#8942;</span>
+    </div>
+  </div>
+  <div class="header-column">
+    <div class="header-edit-icon">
+      <a href="/edit">&#9998;</a>
+    </div>
+    <div class="header-tabs">
+      <span>
+        <a href="/daily" class="active-tab">DAILY</a>
+      </span>
+      <span>
+        <a href="/monthly">MONTHLY</a>
+      </span>
+      <span>
+        <a href="/yearly">YEARLY</a>
+      </span>
+    </div>
+  </div>
+</header>
+<main>
+  <div>
+    <div class="sub-heading-daily">
+      <span class="arrow left-arrow">&#60;</span>
+      <div class="date-box">
+        <span class="date"></span>
+      </div>
+      <div class="date-details">
+        <span class="month"></span>
+        <span class="day"></span>
+      </div>
+      <div class="balance">
+        <span>Balance</span>
+        <span class="balance-amount">₹0.00</span>
+      </div>
+      <span class="arrow right-arrow">&#62;</span>
+    </div>
+    <div id="docbody">
+      <div class="content">
+        <span>C/F</span>
+        <span class="opening-balance">₹0.00</span>
+      </div>
+
+      <div class="daily-box income">
+        <span>Total Income (Credit)</span>
+        <span class="total-income">₹0.00</span>
+      </div>
+
+      <div class="data income-data">
+        Tap on '+' to add new item and long press to edit.
+      </div>
+
+      <div class="daily-box expense">
+        <span>Total Expense (Debit)</span>
+        <span class="total-expense">₹0.00</span>
+      </div>
+
+      <div class="data expense-data">
+        Tap on '+' to add new item and long press to edit.
+      </div>
     </div>
 
-    <div class="content">
-      <span>C/F</span>
-      <span class="balance">Rs. 00</span>
-  </div>
-
-  <div class="daily-box">
-    <span>Total Income (Credit)</span>
-    <span>Rs. 0.00</span>
-  </div>
-
-  <div class="data">
-    Tap on '+' to add new item and long press to edit.
-  </div>
-
-  <div class="daily-box">
-    <span>Total Expense (Debit)</span>
-    <span>Rs. 0.00</span>
-  </div>
-
-  <div class="data">
-    Tap on '+' to add new item and long press to edit.
-  </div>
-
     <div class="content-container">
-      <div class="circle">
-        <a href="" >&#43;</a>
+      <div class="circle" id="addButton">
+        <a href="">&#43;</a>
       </div>
-  </div>
-    </main>
+    </div>
+
+
+    <div class="popup" id="addPopup">
+      <div class="popup-top-box">
+        <div class="left-popup-box income-column" id="incomeColumn">
+          Income (Credit)
+        </div>
+        <div class="right-popup-box expense-column" id="expenseColumn">
+          Expense (Debit)
+        </div>
+      </div>
+      <div class="popup-content">
+        <div class="input-container-text">
+          <input type="text" class="input" placeholder="Enter Text">
+        </div>
+        <div class="input-container-amount">
+          <input type="text" class="input" placeholder="Amount">
+        </div>
+        <div class="circle">
+          <a href="#" id="save-button"><i class="fas fa-check"></i></a>
+        </div>
+      </div>
+      <div class="input-container-description">
+        <i class="fas fa-pencil-alt writing-icon"></i>
+        <input type="text" class="input no-border" placeholder="Describe here">
+      </div>
+    </div>
 
     <script>
       const months = [
-          "January", "February", "March", "April", "May", "June",
-          "July", "August", "September", "October", "November", "December"
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
       ];
-      
+
       const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
       const dateElement = document.querySelector(".date");
@@ -104,40 +132,228 @@
       let currentYear = currentDate.getFullYear();
 
       function updateDate() {
-          dateElement.textContent = currentDay;
-          monthElement.textContent = `${months[currentMonth]}, ${currentYear}`;
-          dayElement.textContent = days[new Date(currentYear, currentMonth, currentDay).getDay()];
+        dateElement.textContent = currentDay;
+        monthElement.textContent = `${months[currentMonth]}, ${currentYear}`;
+        dayElement.textContent = days[new Date(currentYear, currentMonth, currentDay).getDay()];
+      }
+
+      updateDate();
+
+      const circleButton = document.getElementById("addButton");
+      const popup = document.getElementById("addPopup");
+
+      circleButton.addEventListener("click", (event) => {
+        event.stopPropagation(); // Prevent click from reaching document
+        event.preventDefault();
+
+        if (popup.style.display !== "block") {
+          popup.style.display = "block";
+        }
+      });
+
+      // Close the popup when clicking outside of it
+      document.addEventListener("click", (event) => {
+        if (popup.style.display === "block" && !popup.contains(event.target) && event.target !== circleButton) {
+          popup.style.display = "none";
+        }
+      });
+
+
+      const incomeColumn = document.getElementById("incomeColumn");
+      const expenseColumn = document.getElementById("expenseColumn");
+      let isType = "income";
+
+      incomeColumn.addEventListener("click", () => {
+        incomeColumn.style.backgroundColor = "#3b8864";
+        expenseColumn.classList.remove("active-column"); // Reset the other column
+        popup.style.backgroundColor = "#8cfdc8"; // Set popup background color to light green
+        expenseColumn.style.backgroundColor = "white"; // Set Expense column background color to white
+        isType = "income";
+      });
+
+      expenseColumn.addEventListener("click", () => {
+        expenseColumn.style.backgroundColor = "#3b8864";
+        incomeColumn.classList.remove("active-column"); // Reset the other column
+        popup.style.backgroundColor = "#8cddb7"; // Set popup background color to blue
+        incomeColumn.style.backgroundColor = "white"; // Set Income column background color to white
+        isType = "expense";
+      });
+
+      // Select the Income (Credit) column by default
+      incomeColumn.style.backgroundColor = "#3b8864";
+      expenseColumn.style.backgroundColor = "white";
+      popup.style.backgroundColor = "#8cfdc8"; //
+
+
+
+      const saveButton = document.getElementById("save-button");
+      const sourceInput = document.querySelector(".input-container-text input");
+      const amountInput = document.querySelector(".input-container-amount input");
+      const descriptionInput = document.querySelector(".input-container-description input");
+
+
+
+      saveButton.addEventListener("click", async () => {
+
+        const type = isType;
+        const date = currentDay;
+        const selectedDayIndex = new Date(currentYear, currentMonth, currentDay).getDay();
+        const dayofweek = days[selectedDayIndex];
+        const month = months[currentMonth];
+        const year = currentYear;
+        const amount = parseFloat(amountInput.value);
+        const description = descriptionInput.value;
+        const source = sourceInput.value; // Get the source value
+
+        try {
+          const response = await fetch('/save-transaction', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              type,
+              year,
+              month,
+              dayofweek,
+              date,
+              source, // Include the source in the request
+              amount,
+              description
+            })
+          });
+
+          if (response.ok) {
+            console.log('Transaction saved successfully');
+            // Update UI or show a success message to the user
+          } else {
+            console.error('Failed to save transaction');
+            // Handle error case or show an error message
+          }
+        } catch (error) {
+          console.error('Error saving transaction:', error);
+          // Handle error or show an error message
+        }
+      });
+
+
+      function updateUI(data) {
+        const balanceElement = document.querySelector('.balance-amount');
+        const totalIncomeElement = document.querySelector('.total-income');
+        const incomeDataElement = document.querySelector('.income-data');
+        const totalExpenseElement = document.querySelector('.total-expense');
+        const expenseDataElement = document.querySelector('.expense-data');
+        const openingBalanceElement = document.querySelector('.opening-balance'); // Add this line
+
+        balanceElement.textContent = `₹${data.transaction.Balance.toFixed(2)}`;
+        totalIncomeElement.textContent = `₹${data.transaction.TotalIncome.toFixed(2)}`;
+        totalExpenseElement.textContent = `₹${data.transaction.TotalExpense.toFixed(2)}`;
+
+        // Calculate opening balance
+        const openingBalance = data.transaction.TotalIncome + data.transaction.TotalExpense;
+        openingBalanceElement.textContent = `₹${openingBalance.toFixed(2)}`;
+
+        // Clear existing data and create concatenated strings
+        incomeDataElement.innerHTML = '';
+        let incomeHTML = '';
+        data.income.forEach(item => {
+          incomeHTML += `${item.Source}: ₹${item.Amount.toFixed(2)}<br>`;
+        });
+        incomeDataElement.innerHTML = incomeHTML;
+
+        expenseDataElement.innerHTML = '';
+        let expenseHTML = '';
+        data.expense.forEach(item => {
+          expenseHTML += `${item.Source}: ₹${item.Amount.toFixed(2)}<br>`;
+        });
+        expenseDataElement.innerHTML = expenseHTML;
+
+
+        if (data.income.length === 0) {
+          incomeDataElement.textContent = "Tap on '+' to add new item and long press to edit.";
+        } else {
+          incomeDataElement.innerHTML = ''; // Clear existing data
+          data.income.forEach(item => {
+            const itemElement = document.createElement('div');
+            itemElement.innerHTML = `${item.Source}: ₹${item.Amount.toFixed(2)}<br>`; // Use innerHTML for line breaks
+            incomeDataElement.appendChild(itemElement);
+          });
+        }
+
+        if (data.expense.length === 0) {
+          expenseDataElement.textContent = "Tap on '+' to add new item and long press to edit.";
+        } else {
+          expenseDataElement.innerHTML = ''; // Clear existing data
+          data.expense.forEach(item => {
+            const itemElement = document.createElement('div');
+            itemElement.innerHTML = `${item.Source}: ₹${item.Amount.toFixed(2)}<br>`; // Use innerHTML for line breaks
+            expenseDataElement.appendChild(itemElement);
+          });
+        }
+
       }
 
       leftArrow.addEventListener("click", () => {
-          currentDay--;
-          if (currentDay < 1) {
-              currentMonth--;
-              if (currentMonth < 0) {
-                  currentMonth = 11;
-                  currentYear--;
-              }
-              const daysInPreviousMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-              currentDay = daysInPreviousMonth;
+        currentDay--;
+        if (currentDay < 1) {
+          currentMonth--;
+          if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
           }
-          updateDate();
+          const daysInPreviousMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+          currentDay = daysInPreviousMonth;
+        }
+        updateDate();
+        fetchAndUpdateData();
       });
 
       rightArrow.addEventListener("click", () => {
-          currentDay++;
-          const daysInCurrentMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-          if (currentDay > daysInCurrentMonth) {
-              currentDay = 1;
-              currentMonth++;
-              if (currentMonth > 11) {
-                  currentMonth = 0;
-                  currentYear++;
-              }
+        currentDay++;
+        const daysInCurrentMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        if (currentDay > daysInCurrentMonth) {
+          currentDay = 1;
+          currentMonth++;
+          if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
           }
-          updateDate();
+        }
+        updateDate();
+        fetchAndUpdateData();
       });
 
-      updateDate();
-  </script>
-</body>
+
+      async function fetchAndUpdateData() {
+        try {
+          const selectedMonth = months[currentMonth];
+          const selectedYear = currentYear;
+
+          const response = await fetch(`/fetch-data?day=${currentDay}&month=${selectedMonth}&year=${selectedYear}`);
+          const data = await response.json();
+
+          if (data.income.length === 0 && data.expense.length === 0) {
+            updateUI({ transaction: { Balance: 0, TotalIncome: 0, TotalExpense: 0 }, income: [], expense: [] });
+          } else {
+            updateUI(data);
+          }
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      }
+
+
+      // Fetch and update data when the page loads
+      document.addEventListener('DOMContentLoaded', async () => {
+        try {
+          // Fetch and update data for the initial selected date
+          fetchAndUpdateData();
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      });
+
+    </script>
+    </body>
+
 </html>

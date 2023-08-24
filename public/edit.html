@@ -1,99 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Page</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Page</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <header class="app-header">
-        <div class="header-column">
-            <div class="header-content">
-                <h1>Day to Day Expenses</h1>
-            </div>
-            <div class="header-icons">
-                <span class="search-icon">
-                    <i class="fas fa-search"></i>
-                  </span>
-                <span class="dots-icon">&#8942;</span>
-            </div>
-        </div>
-        <div class="header-column">
-            <div class="header-edit-icon">
-              <a href="/edit" class="active-tab">&#9998;</a>
-            </div>
-            <div class="header-tabs">
-                <span>
-                  <a href="/daily">DAILY</a>
-                </span>
-                <span>
-                  <a href="/monthly">MONTHLY</a>
-                </span>
-                <span>
-                  <a href="/yearly">YEARLY</a>
-                </span>
-            </div>
-        </div>
-    </header>
-    <main>
-        <div class="sub-heading">
-          <span class="arrow left-arrow">&#60;</span>
-          <div class="date">
-              <span class="date"></span>
-          </div>
-          <span class="arrow right-arrow">&#62;</span>
-        </div>
-
-        <div class="no-notes">
-          No notes found
+  <header class="app-header">
+    <div class="header-column">
+      <div class="header-content">
+        <h1>Day to Day Expenses</h1>
       </div>
-        <div class="content-container">
-          <div class="circle">
-            <a href="edit-icon.html" >&#9998;</a>
-          </div>
+      <div class="header-icons">
+        <span class="search-icon">
+          <i class="fas fa-search"></i>
+        </span>
+        <span class="dots-icon">&#8942;</span>
       </div>
+    </div>
+    <div class="header-column">
+      <div class="header-edit-icon">
+        <a href="/edit" class="active-tab">&#9998;</a>
+      </div>
+      <div class="header-tabs">
+        <span>
+          <a href="/daily">DAILY</a>
+        </span>
+        <span>
+          <a href="/monthly">MONTHLY</a>
+        </span>
+        <span>
+          <a href="/yearly">YEARLY</a>
+        </span>
+      </div>
+    </div>
+  </header>
+  <main>
+    <div class="sub-heading">
+      <span class="arrow left-arrow">&#60;</span>
+      <div class="date">
+        <span class="date"></span>
+      </div>
+      <span class="arrow right-arrow">&#62;</span>
+    </div>
 
-    </main>
+    <div class="no-notes">
+      No notes found
+    </div>
+    <div class="todo-list">
+      <!-- Todo items will be added here using JavaScript -->
+      <div class="todo-info">
+        <span class="todo-date"></span>
+        <span class="todo-month"></span>
+        <span class="todo-year"></span>
+        <span class="todo-day"></span>
+      </div>
+      <hr/>
+      <div class="todo-item"></div>
+  </div>
+    <div class="content-container">
+      <div class="circle">
+        <a href="edit-icon.html">&#9998;</a>
+      </div>
+    </div>
 
-    <script>
-      const months = [
-          "January", "February", "March", "April", "May", "June",
-          "July", "August", "September", "October", "November", "December"
-      ];
+  </main>
 
-      const dateBox = document.querySelector(".date");
-      const leftArrow = document.querySelector(".left-arrow");
-      const rightArrow = document.querySelector(".right-arrow");
+  <script>
+    const months = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
 
-      let currentDate = new Date();
-      let currentMonth = currentDate.getMonth(); // 0-based index
-      let currentYear = currentDate.getFullYear();
+    const dateBox = document.querySelector(".date");
+    const leftArrow = document.querySelector(".left-arrow");
+    const rightArrow = document.querySelector(".right-arrow");
+    const contentContainer = document.getElementById("content-container");
+    const noNotesDiv = document.getElementById("no-notes");
 
-      function updateDateBox() {
-          dateBox.textContent = `${months[currentMonth]} ${currentYear}`;
+    let currentDate = new Date();
+    let currentMonth = currentDate.getMonth(); // 0-based index
+    let currentYear = currentDate.getFullYear();
+
+    function updateDateBox() {
+        dateBox.textContent = `${months[currentMonth]} ${currentYear}`;
+    }
+
+    leftArrow.addEventListener("click", () => {
+        currentMonth--;
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        updateDateBox();
+        fetchAndDisplayTodos()
+    });
+
+    rightArrow.addEventListener("click", () => {
+        currentMonth++;
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+        updateDateBox();
+        fetchAndDisplayTodos()
+    });
+
+    let filteredTodos = [];
+
+
+    async function fetchAndDisplayTodos() {
+  try {
+    const response = await fetch('/edit-data');
+    const data = await response.json();
+
+    const todoList = document.querySelector('.todo-list');
+    todoList.innerHTML = ''; // Clear the existing content
+
+    let filteredTodos = []; // Initialize an array to store filtered todos
+
+    if (data && data.todos && data.todos.length > 0) {
+      filteredTodos = data.todos.filter(todo => {
+        return todo.year === currentYear && months.indexOf(todo.month) === currentMonth;
+      });
+
+      if (filteredTodos.length > 0) {
+        filteredTodos.forEach(todo => {
+          const todoContainer = document.createElement('div');
+          todoContainer.classList.add('todo-container');
+
+          const todoInfo = document.createElement('div');
+          todoInfo.classList.add('todo-info');
+          todoInfo.innerHTML = `
+            <span class="todo-date">${todo.date}</span>
+            <span class="todo-month">${todo.month}</span>
+            <span class="todo-year">${todo.year}</span>
+            <span class="todo-day">${todo.day}</span>
+          `;
+
+          const todoItem = document.createElement('div');
+          todoItem.classList.add('todo-item');
+          todoItem.textContent = todo.todo;
+
+          todoContainer.appendChild(todoInfo);
+          todoContainer.appendChild(document.createElement('hr'));
+          todoContainer.appendChild(todoItem);
+
+          todoList.appendChild(todoContainer);
+        });
+
+        // Hide the "No notes found" message
+        const noNotesMessage = document.querySelector('.no-notes');
+        noNotesMessage.style.display = 'none';
+      } else {
+        // Show the "No notes found" message
+        const noNotesMessage = document.querySelector('.no-notes');
+        noNotesMessage.style.display = 'block';
+        noNotesMessage.textContent = 'No notes found' ;
       }
+    } else {
+      // Show the "No notes found" message
+      const noNotesMessage = document.querySelector('.no-notes');
+      noNotesMessage.style.display = 'block';
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
 
-      leftArrow.addEventListener("click", () => {
-          currentMonth--;
-          if (currentMonth < 0) {
-              currentMonth = 11;
-              currentYear--;
-          }
-          updateDateBox();
-      });
+    // Handle error here
+    const todoList = document.querySelector('.todo-list');
+    const noNotesMessage = document.querySelector('.no-notes');
 
-      rightArrow.addEventListener("click", () => {
-          currentMonth++;
-          if (currentMonth > 11) {
-              currentMonth = 0;
-              currentYear++;
-          }
-          updateDateBox();
-      });
+    todoList.innerHTML = ''; // Clear existing content
+    noNotesMessage.style.display = 'block';
+    noNotesMessage.textContent = 'An error occurred while fetching data. Please try again later.';
+  }
+}
 
-      updateDateBox();
-  </script>
+
+
+// Call the fetchAndDisplayTodos function on page load
+fetchAndDisplayTodos();
+updateDateBox();
+
+</script>
+
 </body>
+
 </html>

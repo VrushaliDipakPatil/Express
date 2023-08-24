@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <header class="app-header">
         <div class="header-column">
@@ -16,23 +18,23 @@
             <div class="header-icons">
                 <span class="search-icon">
                     <i class="fas fa-search"></i>
-                  </span>
+                </span>
                 <span class="dots-icon">&#8942;</span>
             </div>
         </div>
         <div class="header-column">
             <div class="header-edit-icon">
-              <a href="/edit" class="active-tab">&#9998;</a>
+                <a href="/edit" class="active-tab">&#9998;</a>
             </div>
             <div class="header-tabs">
                 <span>
-                  <a href="/daily">DAILY</a>
+                    <a href="/daily">DAILY</a>
                 </span>
                 <span>
-                  <a href="/monthly">MONTHLY</a>
+                    <a href="/monthly">MONTHLY</a>
                 </span>
                 <span>
-                  <a href="/yearly">YEARLY</a>
+                    <a href="/yearly">YEARLY</a>
                 </span>
             </div>
         </div>
@@ -50,72 +52,119 @@
             <span class="arrow right-arrow">&#62;</span>
         </div>
 
-        <div><input class="input" placeholder="To Do"/></div>
-
+        <div><input id="todo-input" class="input" placeholder="To Do"></div>
 
         <div class="content-container">
-          <div class="circle">
-            <a href="" ><i class="fas fa-check"></i></a>
-          </div>
-      </div>
+            <div class="circle">
+                <a href="#" id="save-button"><i class="fas fa-check"></i></a>
+            </div>
+        </div>
 
     </main>
 
 
-    <script>
-        const months = [
-            "January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
-        ];
-        
-        const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+
+<script>
+    const months = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
   
-        const dateElement = document.querySelector(".date");
-        const monthElement = document.querySelector(".month");
-        const dayElement = document.querySelector(".day");
-        const leftArrow = document.querySelector(".left-arrow");
-        const rightArrow = document.querySelector(".right-arrow");
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   
-        let currentDate = new Date();
-        let currentDay = currentDate.getDate();
-        let currentMonth = currentDate.getMonth(); // 0-based index
-        let currentYear = currentDate.getFullYear();
+    const dateElement = document.querySelector(".date");
+    const monthElement = document.querySelector(".month");
+    const dayElement = document.querySelector(".day");
+    const leftArrow = document.querySelector(".left-arrow");
+    const rightArrow = document.querySelector(".right-arrow");
   
-        function updateDate() {
-            dateElement.textContent = currentDay;
-            monthElement.textContent = `${months[currentMonth]}, ${currentYear}`;
-            dayElement.textContent = days[new Date(currentYear, currentMonth, currentDay).getDay()];
+    let currentDate = new Date();
+    let currentDay = currentDate.getDate();
+    let currentMonth = currentDate.getMonth();
+    let currentYear = currentDate.getFullYear();
+  
+    function updateDate() {
+      dateElement.textContent = currentDay;
+      monthElement.textContent = months[currentMonth];
+      dayElement.textContent = days[new Date(currentYear, currentMonth, currentDay).getDay()];
+    }
+  
+    leftArrow.addEventListener("click", () => {
+      currentDay--;
+      if (currentDay < 1) {
+        currentMonth--;
+        if (currentMonth < 0) {
+          currentMonth = 11;
+          currentYear--;
         }
+        const daysInPreviousMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        currentDay = daysInPreviousMonth;
+      }
+      updateDate();
+    });
   
-        leftArrow.addEventListener("click", () => {
-            currentDay--;
-            if (currentDay < 1) {
-                currentMonth--;
-                if (currentMonth < 0) {
-                    currentMonth = 11;
-                    currentYear--;
-                }
-                const daysInPreviousMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-                currentDay = daysInPreviousMonth;
-            }
-            updateDate();
-        });
+    rightArrow.addEventListener("click", () => {
+      currentDay++;
+      const daysInCurrentMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+      if (currentDay > daysInCurrentMonth) {
+        currentDay = 1;
+        currentMonth++;
+        if (currentMonth > 11) {
+          currentMonth = 0;
+          currentYear++;
+        }
+      }
+      updateDate();
+    });
   
-        rightArrow.addEventListener("click", () => {
-            currentDay++;
-            const daysInCurrentMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-            if (currentDay > daysInCurrentMonth) {
-                currentDay = 1;
-                currentMonth++;
-                if (currentMonth > 11) {
-                    currentMonth = 0;
-                    currentYear++;
-                }
-            }
-            updateDate();
-        });
+    updateDate();
   
-        updateDate();
-    </script>
+    const saveButton = document.querySelector("#save-button");
+    const todoInput = document.querySelector("#todo-input");
+  
+    saveButton.addEventListener("click", async () => {
+  try {
+    const todo = todoInput.value;
+    const date = currentDay;
+    const selectedDayIndex = new Date(currentYear, currentMonth, currentDay).getDay();
+    const day = days[selectedDayIndex];
+    const month = months[currentMonth];
+    const year = currentYear;
+
+    const requestData = {
+      year: year,
+      month: month,
+      day: day,
+      date: date,
+      todo: todo
+    };
+
+    const response = await fetch("/save-expense", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json" // Set the content type to JSON
+      },
+      body: JSON.stringify(requestData) // Send the JSON object in the request body
+    });
+
+    if (response.ok) {
+      const message = await response.text();
+      alert(message);
+    } else {
+      console.error("Error saving expense");
+      alert("Error saving expense");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("An error occurred");
+  }
+});
+
+  
+  </script>
+  
+
 </body>
+
 </html>
