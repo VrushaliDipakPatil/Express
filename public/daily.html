@@ -50,7 +50,7 @@
       </div>
       <div class="balance">
         <span>Balance</span>
-        <span class="balance-amount">₹0.00</span>
+        <span id="balanceAmount" class="balance-amount">₹0.00</span>
       </div>
       <span class="arrow right-arrow">&#62;</span>
     </div>
@@ -249,9 +249,6 @@
         totalIncomeElement.textContent = `₹${data.transaction.TotalIncome.toFixed(2)}`;
         totalExpenseElement.textContent = `₹${data.transaction.TotalExpense.toFixed(2)}`;
 
-        // Calculate opening balance
-        const openingBalance = data.transaction.TotalIncome + data.transaction.TotalExpense;
-        openingBalanceElement.textContent = `₹${openingBalance.toFixed(2)}`;
 
         // Clear existing data and create concatenated strings
         incomeDataElement.innerHTML = '';
@@ -313,6 +310,9 @@
       });
 
       rightArrow.addEventListener("click", () => {
+        const balanceAmountElement = document.getElementById('balanceAmount');
+        const balanceText = balanceAmountElement.textContent;
+        const balanceValue = parseFloat(balanceText.replace('₹', ''));
         currentDay++;
         const daysInCurrentMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
         if (currentDay > daysInCurrentMonth) {
